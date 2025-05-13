@@ -1,0 +1,21 @@
+{
+  "node": "n8n-nodes-base.openAIAnalytics",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": [
+    "AI",
+    "Communication"
+  ],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://platform.openai.com/docs/api-reference/authentication"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://platform.openai.com/docs/api-reference/assistants"
+      }
+    ]
+  }
+} 

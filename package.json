@@ -1,0 +1,96 @@
+{
+  "name": "n8n-nodes-openai-analytics",
+  "version": "0.1.0",
+  "description": "n8n node for OpenAI Analytics",
+  "type": "commonjs",
+  "keywords": [
+    "n8n-community-node-package",
+    "openai",
+    "analytics",
+    "embeddings",
+    "assistants",
+    "api"
+  ],
+  "license": "MIT",
+  "homepage": "https://n8n.io",
+  "author": {
+    "name": "Dante Kim",
+    "email": "example@mail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/n8n-nodes-openai-analytics.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && cp -r assets dist/ && cp assets/openai-analytics.svg dist/nodes/OpenAIAnalytics/",
+    "dev": "tsc --watch",
+    "lint": "eslint src",
+    "lintfix": "eslint src --fix",
+    "prepublishOnly": "npm run build",
+    "install-local": "npm run build && npm pack && mkdir -p ~/.n8n/nodes && cd ~/.n8n/nodes && npm install && cd ~/workspace/dante-code/utils/n8n-nodes-openai-analytics",
+    "start-n8n": "N8N_USER_FOLDER=~/.n8n NODE_OPTIONS=\"--no-warnings\" n8n"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/OpenAIAnalyticsApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/OpenAIAnalytics/OpenAIAnalytics.node.js"
+    ],
+    "nodeTypes": [
+      "dist/nodes/OpenAIAnalytics/OpenAIAnalytics.node.js"
+    ]
+  },
+  "dependencies": {
+    "@azure/identity": "^4.2.1",
+    "@azure/storage-blob": "^12.17.0",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.3",
+    "jspdf": "^2.5.2",
+    "node-fetch": "^2.7.0",
+    "openai": "^4.98.0"
+  },
+  "peerDependencies": {
+    "n8n-core": "^1.0.0",
+    "n8n-nodes-base": "^1.0.0",
+    "n8n-workflow": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.20",
+    "@types/node": "^16.18.59",
+    "@types/request-promise-native": "~1.0.18",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.52.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.1",
+    "n8n-core": "^1.0.0",
+    "n8n-workflow": "^1.82.0",
+    "prettier": "^2.8.8",
+    "semver": "^7.5.4",
+    "typescript": "~5.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "overrides": {
+    "semver": "^7.5.4",
+    "@azure/identity": "^4.2.1",
+    "pdfjs-dist": "^4.2.0",
+    "snowflake-sdk": "^2.0.4",
+    "utf7": {
+      "semver": "^7.5.4"
+    },
+    "imap": {
+      "utf7": {
+        "semver": "^7.5.4"
+      }
+    }
+  }
+}
