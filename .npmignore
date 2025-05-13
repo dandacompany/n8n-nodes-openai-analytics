@@ -1,0 +1,76 @@
+# Source files
+src/
+*.ts
+!*.d.ts
+tsconfig.json
+
+# Development and test files
+tests/
+__tests__/
+test/
+jest.config.js
+*.spec.ts
+*.test.ts
+*.test.js
+coverage/
+.nyc_output/
+
+# Git and GitHub files
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# CI/CD files
+.travis.yml
+.circleci/
+.gitlab-ci.yml
+.jenkins*
+azure-pipelines.yml
+
+# Editor files
+.vscode/
+.idea/
+.editorconfig
+*.sublime-*
+.DS_Store
+
+# Misc files
+.history/
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Project specific
+docs/
+examples/
+demo/
+screenshots/
+.n8n/
+
+# Include dist (needed for npm package)
+!dist/
+
+# Config files
+.eslintrc*
+.prettierrc*
+.stylelintrc*
+.eslintignore
+.prettierignore
+
+# Node modules
+node_modules/ 

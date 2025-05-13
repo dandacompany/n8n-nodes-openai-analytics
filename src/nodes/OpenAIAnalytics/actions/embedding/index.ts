@@ -1,8 +1,5 @@
 import { INodeExecutionData } from 'n8n-workflow';
 import { INodeContext } from '../../types';
-import { createEmbedding } from './createEmbedding';
-import { embeddingBasedClassify } from './embeddingBasedClassify';
-import { llmBasedClassify } from './llmBasedClassify';
 
 export async function handleEmbeddingOperation(
   operation: string, 
@@ -10,11 +7,29 @@ export async function handleEmbeddingOperation(
 ): Promise<INodeExecutionData> {
   switch (operation) {
     case 'create':
-      return await createEmbedding(context);
+      // 임시 구현
+      return {
+        json: { 
+          message: "Embedding operation 'create' not fully implemented yet",
+          operation
+        }
+      };
     case 'embeddingBasedClassify':
-      return await embeddingBasedClassify(context);
+      // 임시 구현
+      return {
+        json: { 
+          message: "Embedding operation 'embeddingBasedClassify' not fully implemented yet",
+          operation
+        }
+      };
     case 'llmBasedClassify':
-      return await llmBasedClassify(context);
+      // 임시 구현
+      return {
+        json: { 
+          message: "Embedding operation 'llmBasedClassify' not fully implemented yet",
+          operation
+        }
+      };
     default:
       throw new Error(`Unsupported embedding operation: ${operation}`);
   }

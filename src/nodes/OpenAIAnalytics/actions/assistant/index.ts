@@ -1,7 +1,7 @@
 import { INodeExecutionData } from 'n8n-workflow';
 import { INodeContext } from '../../types';
 import { getAssistants } from './getAssistants';
-import { getAssistant } from './getAssistant';
+import { createAssistant } from './createAssistant';
 
 export async function handleAssistantOperation(
   operation: string, 
@@ -10,8 +10,8 @@ export async function handleAssistantOperation(
   switch (operation) {
     case 'getAssistants':
       return await getAssistants(context);
-    case 'getAssistant':
-      return await getAssistant(context);
+    case 'createAssistant':
+      return await createAssistant(context);
     default:
       throw new Error(`Unsupported assistant operation: ${operation}`);
   }

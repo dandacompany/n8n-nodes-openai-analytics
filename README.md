@@ -24,6 +24,7 @@ n8n 워크플로우에서 OpenAI API를 쉽게 활용할 수 있도록 다음 �
 ### Assistant Operations / Assistant 작업
 
 - Get Assistants List / Assistant 목록 조회
+- Create Assistant / Assistant 생성
 - Get Assistant Details / 특정 Assistant 정보 조회
 
 ### File Operations / File 작업
@@ -82,40 +83,6 @@ npm install n8n-nodes-openai-analytics
 npm run install-local
 ```
 
-## Troubleshooting / 문제 해결
-
-### Snowflake SDK Dependency Issues / Snowflake SDK 의존성 문제
-
-This project may encounter dependency errors related to `snowflake-sdk` when running. There are two ways to resolve this error:
-
-이 프로젝트가 실행될 때 `snowflake-sdk` 관련 의존성 오류가 발생할 수 있습니다. 이 오류를 해결하기 위한 두 가지 방법이 있습니다:
-
-1. **Using Resolutions Field (Currently Applied) / Resolutions 필드 사용 (현재 적용됨)**
-
-   The following resolutions field has already been added to `package.json`:
-
-   `package.json`에 다음 resolutions 필드가 이미 추가되어 있습니다:
-
-   ```json
-   "resolutions": {
-     "@azure/storage-blob": "^12.13.0"
-   }
-   ```
-
-2. **Running n8n Excluding Snowflake Node / Snowflake 노드 제외하고 n8n 실행**
-
-   You can avoid related dependency issues by excluding the Snowflake node when running n8n:
-
-   n8n을 실행할 때 Snowflake 노드를 제외하면 관련 의존성 문제를 피할 수 있습니다:
-
-   ```bash
-   # Run n8n excluding Snowflake node / Snowflake 노드를 제외하고 n8n 실행
-   N8N_NODES_EXCLUDE=n8n-nodes-snowflake n8n
-
-   # Or use the script included in the project / 또는 프로젝트에 포함된 스크립트 사용
-   npm run start-n8n
-   ```
-
 ## Usage / 사용 방법
 
 1. Access your n8n instance and create a new workflow / n8n 인스턴스에 접속하여 새 워크플로우 생성
@@ -126,6 +93,21 @@ This project may encounter dependency errors related to `snowflake-sdk` when run
 6. Run the workflow / 워크플로우 실행
 
 ## Examples / 예제
+
+### Create Assistant / Assistant 생성
+
+1. Add OpenAI Analytics node / OpenAI Analytics 노드 추가
+2. Select `Assistant` resource / `Assistant` 리소스 선택
+3. Select `Create Assistant` operation / `Create Assistant` 작업 선택
+4. Enter the following parameters / 다음 매개변수 입력:
+   - Assistant Name: Name for your new assistant / 새로운 어시스턴트 이름
+   - Description: Optional description / 설명 (선택 사항)
+   - System Instructions: System prompts for the assistant / 어시스턴트 지시사항
+   - Model: Select AI model (e.g., gpt-4o) / AI 모델 선택 (예: gpt-4o)
+   - Tools: Select which tools to enable (Code Interpreter, Retrieval, Function Calling) / 사용할 도구 선택 (코드 인터프리터, 검색, 함수 호출)
+   - Response Format: Select auto, text, or JSON / 응답 형식 선택 (자동, 텍스트, JSON)
+   - Advanced Settings: Configure temperature, top p and metadata / 고급 설정: 온도, top p 및 메타데이터 구성
+5. Run the workflow / 워크플로우 실행
 
 ### Create and Run Thread / Thread 생성 및 실행
 

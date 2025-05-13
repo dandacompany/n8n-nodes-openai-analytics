@@ -5,9 +5,16 @@ export async function handleReportOperation(
   operation: string, 
   context: INodeContext
 ): Promise<INodeExecutionData> {
-  return {
-    json: {
-      message: `Report operation '${operation}' is not implemented yet.`
-    }
-  };
+  switch (operation) {
+    case 'generateHtmlReport':
+      // 임시 구현
+      return {
+        json: { 
+          message: "Report operation 'generateHtmlReport' not fully implemented yet",
+          operation
+        }
+      };
+    default:
+      throw new Error(`Unsupported report operation: ${operation}`);
+  }
 }

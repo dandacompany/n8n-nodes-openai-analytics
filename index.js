@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.credentialTypes = exports.nodeTypes = void 0;
-var OpenAIAssistants_node_1 = require("./dist/nodes/OpenAIAssistants/OpenAIAssistants.node");
-var OpenAIAssistantsApi_credentials_1 = require("./dist/credentials/OpenAIAssistantsApi.credentials");
+var OpenAIAnalytics_node_1 = require("./dist/nodes/OpenAIAnalytics/OpenAIAnalytics.node");
+var OpenAIAnalyticsApi_credentials_1 = require("./dist/credentials/OpenAIAnalyticsApi.credentials");
 // Export the nodes classes 
 exports.nodeTypes = [
-    new OpenAIAssistants_node_1.OpenAIAssistants(),
+    new OpenAIAnalytics_node_1.OpenAIAnalytics(),
 ];
 // Export the credentials
 exports.credentialTypes = [
-    new OpenAIAssistantsApi_credentials_1.OpenAIAssistantsApi(),
+    new OpenAIAnalyticsApi_credentials_1.OpenAIAnalyticsApi(),
 ]; 

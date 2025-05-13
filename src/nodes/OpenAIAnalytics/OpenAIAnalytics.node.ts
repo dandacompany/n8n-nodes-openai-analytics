@@ -567,11 +567,11 @@ export class OpenAIAnalytics implements INodeType {
 						action: 'Get a list of assistants',
 					},
 					{
-						name: 'Get Assistant',
-						value: 'getAssistant',
-						description: 'Get an assistant by ID',
-						action: 'Get an assistant',
-					},
+						name: 'Create Assistant',
+						value: 'createAssistant',
+						description: 'Create a new assistant',
+						action: 'Create a new assistant',
+					}
 				],
 				default: 'getAssistants',
 			},
@@ -2290,6 +2290,279 @@ export class OpenAIAnalytics implements INodeType {
 				default: 'gpt-4o-mini',
 				description: 'OpenAI model to use for fixing JSON syntax errors',
 				hint: 'JSON 구문 오류를 수정하는 데 사용할 OpenAI 모델',
+			},
+			// Assistant 생성 작업
+			{
+				displayName: 'Assistant Name',
+				name: 'assistantName',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: '',
+				description: 'The name of the assistant',
+				hint: '어시스턴트의 이름',
+				required: true,
+			},
+			{
+				displayName: 'Description',
+				name: 'assistantDescription',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: '',
+				description: 'The description of the assistant',
+				hint: '어시스턴트에 대한 설명',
+				required: false,
+			},
+			{
+				displayName: 'System Instructions',
+				name: 'assistantInstructions',
+				type: 'string',
+				typeOptions: {
+					rows: 4,
+					alwaysOpenEditWindow: true,
+				},
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: '',
+				description: 'The system instructions that the assistant uses',
+				hint: '어시스턴트가 사용하는 시스템 지시사항',
+				required: false,
+			},
+			{
+				displayName: 'Model',
+				name: 'assistantModel',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompletionModels',
+				},
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: 'gpt-4o',
+				description: 'The model used by the assistant',
+				hint: '어시스턴트가 사용하는 모델',
+				required: true,
+			},
+			{
+				displayName: 'Tools',
+				name: 'assistantTools',
+				type: 'notice',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: '',
+				description: '어시스턴트가 사용할 도구 선택',
+			},
+			{
+				displayName: 'Use Code Interpreter',
+				name: 'useCodeInterpreter',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: false,
+				description: 'Whether to use code interpreter',
+				hint: '코드 인터프리터 사용 여부',
+			},
+			{
+				displayName: 'Use Retrieval (File Search)',
+				name: 'useRetrieval',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: false,
+				description: 'Whether to use file retrieval capability',
+				hint: '파일 검색 능력 사용 여부',
+			},
+			{
+				displayName: 'Use Function Calling',
+				name: 'useFunctionCalling',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: false,
+				description: 'Whether to use function calling capability',
+				hint: '함수 호출 기능 사용 여부',
+			},
+			{
+				displayName: 'Function Definitions',
+				name: 'functionDefinitions',
+				type: 'json',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+						useFunctionCalling: [true],
+					},
+				},
+				default: '[]',
+				description: 'JSON array of function definitions',
+				hint: '함수 정의 JSON 배열',
+				typeOptions: {
+					alwaysOpenEditWindow: true,
+				},
+			},
+			{
+				displayName: 'Response Format',
+				name: 'responseFormatType',
+				type: 'options',
+				options: [
+					{
+						name: 'Auto (Default)',
+						value: 'auto',
+						description: 'Automatically choose the response format',
+					},
+					{
+						name: 'Text',
+						value: 'text',
+						description: 'Text format response',
+					},
+					{
+						name: 'JSON Object',
+						value: 'json_object',
+						description: 'JSON Object format response',
+					}
+				],
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: 'auto',
+				description: 'The format that the assistant should use for the response',
+				hint: '어시스턴트가 응답에 사용해야 하는 형식',
+			},
+			{
+				displayName: 'Advanced Settings',
+				name: 'useAdvancedSettings',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: false,
+				description: 'Whether to use advanced generation parameters',
+				hint: '고급 생성 매개변수 사용 여부',
+			},
+			{
+				displayName: 'Temperature',
+				name: 'temperature',
+				type: 'number',
+				typeOptions: {
+					minValue: 0,
+					maxValue: 2,
+					numberPrecision: 2,
+				},
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+						useAdvancedSettings: [true],
+					},
+				},
+				default: 0.7,
+				description: 'Controls randomness (0: deterministic, 2: random)',
+				hint: '응답의 무작위성을 제어합니다 (0: 결정적, 2: 매우 무작위적)',
+			},
+			{
+				displayName: 'Top P',
+				name: 'topP',
+				type: 'number',
+				typeOptions: {
+					minValue: 0,
+					maxValue: 1,
+					numberPrecision: 2,
+				},
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+						useAdvancedSettings: [true],
+					},
+				},
+				default: 1,
+				description: 'Controls diversity via nucleus sampling',
+				hint: '핵 샘플링을 통해 다양성을 제어합니다',
+			},
+			{
+				displayName: 'Metadata',
+				name: 'metadata',
+				type: 'json',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+						useAdvancedSettings: [true],
+					},
+				},
+				default: '{}',
+				description: 'Metadata in JSON format',
+				hint: 'JSON 형식의 메타데이터',
+			},
+			{
+				displayName: 'Use File Attachments',
+				name: 'useFileAttachments',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+					},
+				},
+				default: false,
+				description: 'Whether to attach files to the assistant',
+				hint: '어시스턴트에 파일 첨부 여부',
+			},
+			{
+				displayName: 'File IDs',
+				name: 'assistantFileIds',
+				type: 'multiOptions',
+				typeOptions: {
+					loadOptionsMethod: 'getFiles',
+				},
+				displayOptions: {
+					show: {
+						resource: ['assistant'],
+						operation: ['createAssistant'],
+						useFileAttachments: [true],
+					},
+				},
+				default: [],
+				description: 'File IDs to attach to the assistant',
+				hint: '어시스턴트에 첨부할 파일 ID',
 			},
 		],
 	};

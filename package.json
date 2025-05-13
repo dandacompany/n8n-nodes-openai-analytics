@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-openai-analytics",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "n8n node for OpenAI Analytics",
   "type": "commonjs",
   "keywords": [
@@ -14,12 +14,12 @@
   "license": "MIT",
   "homepage": "https://n8n.io",
   "author": {
-    "name": "Dante Kim",
-    "email": "example@mail.com"
+    "name": "Dante Labs",
+    "email": "datapod.k@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/n8n-nodes-openai-analytics.git"
+    "url": "https://github.com/dandacompany/n8n-nodes-openai-analytics.git"
   },
   "main": "index.js",
   "scripts": {
