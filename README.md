@@ -39,6 +39,7 @@ n8n 워크플로우에서 OpenAI API를 쉽게 활용할 수 있도록 다음 �
 - Create Embeddings from Text / 텍스트를 임베딩 벡터로 변환
 - Embedding Based Classification / 임베딩 기반 텍스트 분류
 - LLM Based Classification / LLM 기반 텍스트 분류
+- Cosine Similarity / 코사인 유사도 계산
 
 ### Text Operations / Text 작업
 
@@ -130,6 +131,17 @@ npm run install-local
    - Embedding Model: Model to use for embeddings / 임베딩에 사용할 모델
    - Categories: Define classification categories / 분류 카테고리 정의
    - Similarity Threshold: Minimum similarity score for classification / 분류 최소 유사도 점수
+5. Run the workflow / 워크플로우 실행
+
+### Calculate Cosine Similarity / 코사인 유사도 계산
+
+1. Add OpenAI Analytics node / OpenAI Analytics 노드 추가
+2. Select `Embedding` resource / `Embedding` 리소스 선택
+3. Select `Cosine Similarity` operation / `Cosine Similarity` 작업 선택
+4. Enter the following parameters / 다음 매개변수 입력:
+   - Input Method: Direct input, JSON Path, or Binary Property / 입력 방식 선택
+   - Embedding Vector 1: First vector for comparison / 비교할 첫 번째 벡터
+   - Embedding Vector 2: Second vector for comparison / 비교할 두 번째 벡터
 5. Run the workflow / 워크플로우 실행
 
 ### Generate HTML Report / HTML 보고서 생성

@@ -1,5 +1,6 @@
 import { INodeExecutionData } from 'n8n-workflow';
 import { INodeContext } from '../../types';
+import { generateHtmlReport } from './generateHtmlReport';
 
 export async function handleReportOperation(
   operation: string, 
@@ -7,14 +8,9 @@ export async function handleReportOperation(
 ): Promise<INodeExecutionData> {
   switch (operation) {
     case 'generateHtmlReport':
-      // 임시 구현
-      return {
-        json: { 
-          message: "Report operation 'generateHtmlReport' not fully implemented yet",
-          operation
-        }
-      };
+      return await generateHtmlReport(context);
     default:
       throw new Error(`Unsupported report operation: ${operation}`);
   }
-}
+} 
+

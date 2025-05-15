@@ -1089,79 +1089,21 @@ export class OpenAIAnalytics implements INodeType {
 			{
 				displayName: 'File IDs',
 				name: 'threadFileIds',
-				type: 'multiOptions',
+				type: 'string',
 				typeOptions: {
-					loadOptionsMethod: 'getFiles',
+					multipleValues: true,
 				},
 				displayOptions: {
-						show: {
-							resource: ['thread'],
-							operation: ['createAndRunThread'],
-							threadFileAttachmentMethod: ['existingFiles', 'both'],
-							threadFileIdsEnabled: [true],
-						},
+					show: {
+						resource: ['thread'],
+						operation: ['createAndRun'],
+						threadFileAttachmentMethod: ['existingFiles', 'both'],
+						threadFileIdsEnabled: [true],
 					},
+				},
 				default: [],
 				description: 'File IDs to attach to the thread',
 				hint: '스레드에 첨부할 파일 ID',
-			},
-			{
-				displayName: 'Wait for Completion',
-				name: 'threadWaitForCompletion',
-				type: 'boolean',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['createAndRunThread'],
-					},
-				},
-				default: true,
-				description: 'Whether to wait for the run to complete before returning',
-				hint: '실행 완료를 기다릴지 여부',
-			},
-			{
-				displayName: 'Maximum Poll Time (Seconds)',
-				name: 'threadMaxPollTime',
-				type: 'number',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['createAndRunThread'],
-						threadWaitForCompletion: [true],
-					},
-				},
-				default: 120,
-				description: 'Maximum time in seconds to wait for the run to complete',
-				hint: '실행 완료를 대기하는 최대 시간(초)',
-			},
-			{
-				displayName: 'Instructions',
-				name: 'threadInstructions',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['createAndRunThread'],
-					},
-				},
-				default: '',
-				description: 'Override the default system instructions of the assistant',
-				hint: '어시스턴트의 기본 시스템 지시사항을 재정의',
-				required: false,
-			},
-			{
-				displayName: 'Simplify Output',
-				name: 'threadSimplifyOutput',
-				type: 'boolean',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['createAndRunThread'],
-					},
-				},
-				default: true,
-				description: 'Whether to return simplified response format',
-				hint: '간단한 응답 형식으로 반환할지 여부',
 			},
 			{
 				displayName: 'Prompt',
@@ -1637,13 +1579,6 @@ export class OpenAIAnalytics implements INodeType {
 				hint: 'JSON 구문 오류를 수정하는 데 사용할 OpenAI 모델',
 			},
 			{
-				displayName: 'Binary Property',
-				name: 'binaryPropertyName',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['embedding'],
-						operation: ['parseJson'],
 					},
 				},
 				default: 'data',
@@ -2037,7 +1972,7 @@ export class OpenAIAnalytics implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['thread'],
-						operation: ['run', 'createAndRun'],
+						operation: ['createAndRunThread'],
 					},
 				},
 				default: true,
@@ -2050,7 +1985,7 @@ export class OpenAIAnalytics implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['thread'],
-						operation: ['run', 'createAndRun'],
+						operation: ['createAndRunThread'],
 						threadWaitForCompletion: [true],
 					},
 				},
@@ -2064,7 +1999,7 @@ export class OpenAIAnalytics implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['thread'],
-						operation: ['run', 'createAndRun'],
+						operation: ['createAndRunThread'],
 					},
 				},
 				default: '',
@@ -2078,7 +2013,7 @@ export class OpenAIAnalytics implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['thread'],
-						operation: ['run', 'createAndRun'],
+						operation: ['createAndRunThread'],
 					},
 				},
 				default: true,
@@ -2106,25 +2041,6 @@ export class OpenAIAnalytics implements INodeType {
 				default: 'parseJson',
 			},
 			// Parse JSON to Object Operation
-			{
-				displayName: 'JSON Input',
-				name: 'jsonInput',
-				type: 'string',
-				typeOptions: {
-					rows: 8,
-					alwaysOpenEditWindow: true,
-				},
-				displayOptions: {
-					show: {
-						resource: ['text'],
-						operation: ['parseJson'],
-					},
-				},
-				default: '',
-				description: 'The JSON string to parse',
-				hint: '파싱할 JSON 문자열을 입력하세요',
-				required: true,
-			},
 			{
 				displayName: 'Use AI Fix',
 				name: 'useAiFix',
@@ -2564,297 +2480,6 @@ export class OpenAIAnalytics implements INodeType {
 				description: 'Name of the binary property containing the second vector',
 				hint: '두 번째 벡터가 저장된 바이너리 속성의 이름',
 				required: true,
-			},
-			{
-				displayName: 'File Attachment Method',
-				name: 'threadFileAttachmentMethod',
-				type: 'options',
-				options: [
-					{
-						name: 'Use Existing File IDs',
-						value: 'existingFiles',
-						description: 'Use file IDs already uploaded to OpenAI',
-					},
-					{
-						name: 'Upload Files from Previous Node',
-						value: 'uploadFiles',
-						description: 'Upload binary files from previous node',
-					},
-					{
-						name: 'Use Both Methods',
-						value: 'both',
-						description: 'Use both existing file IDs and upload new files',
-					},
-					{
-						name: 'No File Attachments',
-						value: 'none',
-						description: 'Do not attach any files',
-					},
-				],
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-					},
-				},
-				default: 'none',
-				description: 'Select file attachment method',
-				hint: '파일을 첨부하는 방식 선택',
-			},
-			{
-				displayName: 'Binary Property',
-				name: 'threadBinaryPropertyName',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadFileAttachmentMethod: ['uploadFiles', 'both'],
-					},
-				},
-				default: 'data',
-				description: 'Binary property containing data from previous node (e.g. "data")',
-				hint: '이전 노드에서 전달된 바이너리 데이터를 포함하는 속성 이름 (예: "data")',
-				required: true,
-			},
-			{
-				displayName: 'File Purpose',
-				name: 'threadUploadFilePurpose',
-				type: 'options',
-				options: [
-					{
-						name: 'Assistants',
-						value: 'assistants',
-						description: 'Files for use with Assistant',
-					},
-					{
-						name: 'Assistants Input',
-						value: 'assistants_input',
-						description: 'Files for input to Assistant',
-					},
-				],
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadFileAttachmentMethod: ['uploadFiles', 'both'],
-					},
-				},
-				default: 'assistants',
-				description: 'Select purpose for uploaded files',
-				hint: '업로드할 파일의 목적 선택',
-			},
-			{
-				displayName: 'Enable File Attachments',
-				name: 'threadFileIdsEnabled',
-				type: 'boolean',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadFileAttachmentMethod: ['existingFiles', 'both'],
-					},
-				},
-				default: true,
-				description: 'Whether to attach existing uploaded files',
-				hint: '기존 업로드된 파일을 첨부할지 여부',
-			},
-			{
-				displayName: 'File IDs',
-				name: 'threadFileIds',
-				type: 'multiOptions',
-				typeOptions: {
-					loadOptionsMethod: 'getFiles',
-				},
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadFileAttachmentMethod: ['existingFiles', 'both'],
-						threadFileIdsEnabled: [true],
-					},
-				},
-				default: [],
-				description: 'File IDs to attach to the thread',
-				hint: '스레드에 첨부할 파일 ID',
-			},
-			{
-				displayName: 'Thread ID',
-				name: 'existingThreadId',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-					},
-				},
-				default: '',
-				description: 'The ID of the existing thread to run',
-				hint: '실행할 기존 Thread의 ID',
-				required: true,
-			},
-			{
-				displayName: 'Message Input Method',
-				name: 'threadMessageInputMethod',
-				type: 'options',
-				options: [
-					{
-						name: 'Single Message',
-						value: 'singleMessage',
-						description: 'Add only one message',
-					},
-					{
-						name: 'Multiple Messages',
-						value: 'multipleMessages',
-						description: 'Add multiple messages (can specify role)',
-					},
-				],
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-					},
-				},
-				default: 'singleMessage',
-				description: 'Select message input method',
-				hint: '메시지 입력 방식 선택',
-			},
-			{
-				displayName: 'Additional Message',
-				name: 'threadAdditionalMessage',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadMessageInputMethod: ['singleMessage'],
-					},
-				},
-				default: '',
-				description: 'The message to add to the thread before running',
-				hint: '실행 전 Thread에 추가할 메시지',
-				required: true,
-			},
-			{
-				displayName: 'Messages',
-				name: 'threadMessages',
-				type: 'fixedCollection',
-				typeOptions: {
-					multipleValues: true,
-					sortable: true,
-				},
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadMessageInputMethod: ['multipleMessages'],
-					},
-				},
-				default: {
-					values: [
-						{
-							role: 'user',
-							content: '',
-						},
-					],
-				},
-				options: [
-					{
-						displayName: 'Values',
-						name: 'values',
-						values: [
-							{
-								displayName: 'Role',
-								name: 'role',
-								type: 'options',
-								options: [
-									{
-										name: 'User',
-										value: 'user',
-										description: 'User message',
-									},
-									{
-										name: 'System',
-										value: 'system',
-										description: 'System message',
-									},
-								],
-								default: 'user',
-								description: 'Role of the message author',
-								hint: '메시지 작성자의 역할',
-							},
-							{
-								displayName: 'Content',
-								name: 'content',
-								type: 'string',
-								default: '',
-								description: 'Message content',
-								hint: '메시지 내용',
-								required: true,
-							},
-						],
-					},
-				],
-				description: 'List of messages to add to the thread',
-				hint: 'Thread에 추가할 메시지 목록',
-			},
-			{
-				displayName: 'Wait for Completion',
-				name: 'threadWaitForCompletion',
-				type: 'boolean',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-					},
-				},
-				default: true,
-				description: 'Whether to wait for the run to complete before returning',
-				hint: '실행 완료를 기다릴지 여부',
-			},
-			{
-				displayName: 'Maximum Poll Time (Seconds)',
-				name: 'threadMaxPollTime',
-				type: 'number',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-						threadWaitForCompletion: [true],
-					},
-				},
-				default: 120,
-				description: 'Maximum time in seconds to wait for the run to complete',
-				hint: '실행 완료를 대기하는 최대 시간(초)',
-			},
-			{
-				displayName: 'Instructions',
-				name: 'threadInstructions',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-					},
-				},
-				default: '',
-				description: 'Override the default system instructions of the assistant',
-				hint: '어시스턴트의 기본 시스템 지시사항을 재정의',
-				required: false,
-			},
-			{
-				displayName: 'Simplify Output',
-				name: 'threadSimplifyOutput',
-				type: 'boolean',
-				displayOptions: {
-					show: {
-						resource: ['thread'],
-						operation: ['runExistingThread'],
-					},
-				},
-				default: true,
-				description: 'Whether to return simplified response format',
-				hint: '간단한 응답 형식으로 반환할지 여부',
 			},
 		],
 	};

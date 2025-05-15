@@ -17,7 +17,16 @@ interface IEmbeddingClassificationResult extends IDataObject {
 }
 
 // 워크플로우 ID별 카테고리 임베딩을 저장하는 캐시
-const categoryEmbeddingsCache = new Map<string, ICategory[]>();
+const categoryEmbeddingsCache = new Map<string, Map<string, number[]>>();
+
+/**
+ * 카테고리 목록의 해시값을 생성
+ * @param categories 카테고리 목록
+ * @returns 카테고리 목록의 해시값
+ */
+function getCategoriesHash(categories: Array<{ category: string; embedding: number[] }>): string {
+  return categories.map(c => c.category).sort().join('|');
+}
 
 /**
  * 임베딩 기반 텍스트 분류기
@@ -52,39 +61,53 @@ export async function embeddingBasedClassify(context: INodeContext): Promise<INo
                       'default') as string;
   
   const cacheKey = `${workflowId}_${embeddingModel}`;
+  
+  // 결과 카테고리 배열 초기화
   let categories: ICategory[] = [];
   
-  // 카테고리 임베딩 준비
-  const categoriesMode = functionThis.getNodeParameter('embeddingCategoriesMode', i, 'new') as string;
+  // 워크플로우에 대한 임베딩 캐시 가져오기 또는 새로 생성
+  if (!categoryEmbeddingsCache.has(cacheKey)) {
+    categoryEmbeddingsCache.set(cacheKey, new Map<string, number[]>());
+  }
   
-  if (categoriesMode === 'saved' && categoryEmbeddingsCache.has(cacheKey)) {
-    // 저장된 카테고리 임베딩 사용
-    categories = categoryEmbeddingsCache.get(cacheKey) || [];
-    console.log(`캐시된 카테고리 임베딩을 사용합니다. (${categories.length}개)`);
-  } else {
-    // 새 카테고리 임베딩 생성
-    for (const item of categoriesCollection.values) {
-      let embedding = item.embedding;
-      
-      // 임베딩이 없거나 빈 배열이면 생성
-      if (!embedding || embedding.length === 0) {
+  const workflowEmbeddingCache = categoryEmbeddingsCache.get(cacheKey)!;
+  
+  // 카테고리별로 임베딩 처리
+  for (const item of categoriesCollection.values) {
+    let embedding = item.embedding;
+    const category = item.category;
+    
+    // 임베딩이 없거나 빈 배열인 경우
+    if (!embedding || embedding.length === 0) {
+      // 캐시에 카테고리가 있는 경우 캐시 사용
+      if (workflowEmbeddingCache.has(category)) {
+        embedding = workflowEmbeddingCache.get(category)!;
+        console.log(`카테고리 '${category}'에 대해 캐시된 임베딩을 사용합니다.`);
+      } else {
+        // 캐시에 없는 경우 새 임베딩 생성
+        console.log(`카테고리 '${category}'에 대한 새 임베딩을 생성합니다.`);
         const embeddingResponse = await openai.embeddings.create({
           model: embeddingModel,
-          input: item.category,
+          input: category,
         });
         embedding = embeddingResponse.data[0].embedding;
+        
+        // 생성된 임베딩 캐싱
+        workflowEmbeddingCache.set(category, embedding);
       }
-      
-      categories.push({
-        category: item.category,
-        embedding,
-      });
+    } else {
+      // 사용자가 직접 임베딩을 제공한 경우 캐시 갱신
+      workflowEmbeddingCache.set(category, embedding);
     }
     
-    // 카테고리 임베딩 캐싱
-    categoryEmbeddingsCache.set(cacheKey, categories);
-    console.log(`${categories.length}개의 카테고리 임베딩을 생성하고 캐시에 저장했습니다.`);
+    categories.push({
+      category,
+      embedding,
+    });
   }
+  
+  // 캐시 통계 로깅
+  console.log(`워크플로우 '${workflowId}'에 대한 임베딩 캐시: ${workflowEmbeddingCache.size}개 카테고리`);
   
   // 대상 텍스트 임베딩 생성
   const embeddingResponse = await openai.embeddings.create({

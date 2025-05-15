@@ -17,15 +17,12 @@ export async function createEmbedding(context: INodeContext): Promise<INodeExecu
     input = functionThis.getNodeParameter('text', i) as string;
   } else if (inputType === 'multipleTexts') {
     input = functionThis.getNodeParameter('texts', i) as string[];
-  } else if (inputType === 'jsonInput') {
-    const jsonData = functionThis.getNodeParameter('jsonInput', i) as string;
-    input = JSON.parse(jsonData) as string[];
   }
   
   const options = functionThis.getNodeParameter('options', i, {}) as IDataObject;
   
   // 모델 설정
-  const model = (options.model as string) || 'text-embedding-ada-002';
+  const model = functionThis.getNodeParameter('model', i) as string;
   
   // 응답 형식 설정
   const encodingFormat = (options.encodingFormat as string) || 'float';

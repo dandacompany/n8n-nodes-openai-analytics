@@ -55,7 +55,6 @@ export async function createAndRunThread(context: INodeContext): Promise<INodeEx
         const uploadParams: any = {
           file: fileStream,
           purpose: uploadFilePurpose === 'assistants_input' ? 'assistants_input' : 'assistants',
-          filename: fileName,
         };
         
         const fileUploadResult = await openai.files.create(uploadParams);
